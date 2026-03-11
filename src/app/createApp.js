@@ -20,6 +20,7 @@ async function createApp({ buildServiceContainer }) {
       "/me",
       servicesContainer.middleware.createAuthHttpMiddleware,
       (req, res) => {
+        console.log("Whats this? ");
         res.json({ userData: req.userData || null });
       },
     );
