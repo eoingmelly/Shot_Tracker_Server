@@ -6,6 +6,9 @@ const {
 
 async function buildServiceContainer() {
   const { authenticationService } = await createAuthenticationService();
+  const expressAuthMiddleware = await createAuthHttpMiddleware({
+    authenticationService,
+  });
   return {
     //modules: { auth },
     services: {
@@ -13,7 +16,7 @@ async function buildServiceContainer() {
     },
     middleware: {
       // optional: flattened references later if you want
-      createAuthHttpMiddleware,
+      expressAuthMiddleware,
     },
   };
 }

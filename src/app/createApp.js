@@ -9,18 +9,29 @@ async function createApp({ buildServiceContainer }) {
 
     let servicesContainer = await buildServiceContainer();
 
+    const corsOptions = {
+      origin: [
+        "http://localhost:5173",
+        //, 'https://my-app.com'
+      ],
+    };
     app.use(helmet());
-    app.use(cors());
+    app.use(cors(corsOptions));
     app.use(express.json());
 
-    // Example protected route
+    // Example unprotected route
     app.get("/health", (req, res) => res.json({ ok: true }));
+
+    const { expressAuthMiddleware } = servicesContainer.middleware;
 
     app.get(
       "/me",
-      servicesContainer.middleware.createAuthHttpMiddleware,
+      (req, res, next) => {
+        console.log("hit /me route");
+        next();
+      },
+      expressAuthMiddleware,
       (req, res) => {
-        console.log("Whats this? ");
         res.json({ userData: req.userData || null });
       },
     );

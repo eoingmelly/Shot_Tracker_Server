@@ -12,9 +12,12 @@ const {
 function createExpressAuthMiddleware({ authenticationService }) {
   return async function expressAuthMiddleware(req, res, next) {
     try {
+      console.log("Getting Token");
       const token = _extractToken(req);
-
+      console.log("Token ? ", token);
+      console.log("authenticating it");
       const userData = await authenticationService.authenticate(token);
+      console.log("user data ", userData);
       req.userData = userData;
       return next();
     } catch (err) {
@@ -27,7 +30,7 @@ function createExpressAuthMiddleware({ authenticationService }) {
       if (err instanceof InvalidTokenError) {
         return res.status(401).json({ error: "invalid_token" });
       }
-
+      console.log("Eh ", err);
       return next(err); // unexpected error => let global error handler deal with it
     }
   };
