@@ -22,19 +22,21 @@ async function createApp({ buildServiceContainer }) {
     // Example unprotected route
     app.get("/health", (req, res) => res.json({ ok: true }));
 
-    const { expressAuthMiddleware } = servicesContainer.middleware;
+    const { golferRoutes } = servicesContainer.routes;
 
-    app.get(
-      "/me",
-      (req, res, next) => {
-        console.log("hit /me route");
-        next();
-      },
-      expressAuthMiddleware,
-      (req, res) => {
-        res.json({ userData: req.userData || null });
-      },
-    );
+    app.use(golferRoutes);
+
+    // app.get(
+    //   "/me",
+    //   (req, res, next) => {
+
+    //     next();
+    //   },
+    //   expressAuthMiddleware,
+    //   (req, res) => {
+    //     res.json({ userData: req.userData || null });
+    //   },
+    // );
 
     return { app };
   } catch (e) {

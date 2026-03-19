@@ -1,25 +1,11 @@
 class IGolferRepository {
-  create(doc) {
-    throw new Error("Not implemented");
+  async findBySub({ sub }) {
+    throw new Error("IGolferRepository.findBySub must be implemented");
   }
-  saveToDb(doc) {
-    throw new Error("Not implemented");
-  }
-  updateById(id, update) {
-    throw new Error("Not implemented");
-  }
-  findById(id) {
-    throw new Error("Not implemented");
-  }
-  deleteById(id) {
-    throw new Error("Not implemented");
-  }
-  deleteMany(query) {
-    throw new Error("Not implemented");
-  }
-  findAll(findQuery) {
-    throw new Error("Not implemented");
+
+  async create({ golfer }) {
+    throw new Error("IGolferRepository.create must be implemented");
   }
 }
 
-module.exports = IGolferRepository;
+module.exports = { IGolferRepository };

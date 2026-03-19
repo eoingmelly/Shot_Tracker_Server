@@ -5,13 +5,16 @@ class IdentityService {
    * @param {Object} deps.golferRepository - your existing golfer repo (domain interface)
    * @param {Object} deps.identityProvider - implements IIdentityProvider
    */
-  constructor({ golferRepository, identityProvider }) {
-    if (!golferRepository)
-      throw new Error("IdentityService requires { golferRepository }");
+  constructor({
+    //golferRepository,
+    identityProvider,
+  }) {
+    // if (!golferRepository)
+    //   throw new Error("IdentityService requires { golferRepository }");
     if (!identityProvider)
       throw new Error("IdentityService requires { identityProvider }");
 
-    this._golferRepository = golferRepository;
+    //this._golferRepository = golferRepository;
     this._identityProvider = identityProvider;
   }
 

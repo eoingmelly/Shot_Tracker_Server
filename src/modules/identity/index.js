@@ -10,16 +10,18 @@ const {
  * Returns constructed services for use by the main app.
  *
  * @param {Object} deps
- * @param {Object} deps.golferRepository - required (your existing repo)
  * @param {Object} deps.config
  * @param {string} deps.config.region
  * @param {string} deps.config.userPoolId
  * @param {Object} [deps.config.clientConfig] - optional AWS SDK client config
  * @param {Object} [deps.identityProvider] - optional override (swap provider / tests)
  */
-function createIdentityModule({ golferRepository, identityProvider } = {}) {
-  if (!golferRepository)
-    throw new Error("createIdentityModule requires { golferRepository }");
+function createIdentityModule({
+  //golferRepository,
+  identityProvider,
+} = {}) {
+  //if (!golferRepository)
+  //throw new Error("createIdentityModule requires { golferRepository }");
 
   //Default to cognito identity provider...
   const provider =
@@ -30,7 +32,7 @@ function createIdentityModule({ golferRepository, identityProvider } = {}) {
     });
 
   const identityService = new IdentityService({
-    golferRepository,
+    //golferRepository,
     identityProvider: provider,
   });
 
