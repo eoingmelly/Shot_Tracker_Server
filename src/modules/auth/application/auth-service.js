@@ -16,7 +16,7 @@ class AuthService {
     }
     const trimmedToken = token.trim();
     try {
-      return await this._tokenverifier.verify(trimmedToken);
+      return await this._tokenVerifier.verify(trimmedToken);
     } catch (err) {
       throw err;
     }
