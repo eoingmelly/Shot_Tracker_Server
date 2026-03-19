@@ -4,7 +4,7 @@ const {
   createAuthHttpMiddleware,
 } = require("./auth");
 
-const { createGolferService } = require("./golfer");
+const { createGolferModule } = require("./golfer");
 //const { createIdentityModule } = require("./identity");
 
 async function buildServiceContainer() {
@@ -13,21 +13,18 @@ async function buildServiceContainer() {
     authenticationService,
   });
 
-  const { golferService, golferRoutes } = await createGolferService({
+  const { golferService, golferRoutes } = await createGolferModule({
     expressAuthMiddleware,
   });
 
   //const identityService = await createIdentityModule();
 
   return {
-    //modules: { auth },
     services: {
       authenticationService,
       golferService,
-      //  identityService,
     },
     middleware: {
-      // optional: flattened references later if you want
       expressAuthMiddleware,
     },
     routes: {

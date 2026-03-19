@@ -12,9 +12,9 @@ const {
 const { createGetMeHandler } = require("./infrastructure/http/get-me-handler");
 const { createGolferRoutes } = require("./infrastructure/http/golfer-routes");
 
-function createGolferService({ expressAuthMiddleware }) {
+function createGolferModule({ expressAuthMiddleware }) {
   if (!expressAuthMiddleware)
-    throw new Error("createGolferService requires { expressAuthMiddleware }");
+    throw new Error("createGolferModule requires { expressAuthMiddleware }");
 
   const golferMapper = new GolferMapper();
 
@@ -42,4 +42,4 @@ function createGolferService({ expressAuthMiddleware }) {
   };
 }
 
-module.exports = { createGolferService };
+module.exports = { createGolferModule };
