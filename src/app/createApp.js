@@ -26,18 +26,6 @@ async function createApp({ buildServiceContainer }) {
 
     app.use(golferRoutes);
 
-    // app.get(
-    //   "/me",
-    //   (req, res, next) => {
-
-    //     next();
-    //   },
-    //   expressAuthMiddleware,
-    //   (req, res) => {
-    //     res.json({ userData: req.userData || null });
-    //   },
-    // );
-
     return { app };
   } catch (e) {
     console.log("e? ", e);
