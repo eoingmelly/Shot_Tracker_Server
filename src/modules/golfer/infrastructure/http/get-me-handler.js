@@ -4,7 +4,6 @@ function createGetMeHandler({ golferService }) {
 
   return async function getMeHandler(req, res, next) {
     try {
-      console.log("route /me hit", req.userData);
       if (!req.userData) throw new Error("getMeHandler requires req.userData");
 
       const { sub, email, preferredUsername = null } = req.userData;
