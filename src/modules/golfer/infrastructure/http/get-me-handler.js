@@ -6,12 +6,12 @@ function createGetMeHandler({ golferService }) {
     try {
       if (!req.userData) throw new Error("getMeHandler requires req.userData");
 
-      const { sub, email, preferredUsername = null } = req.userData;
+      const { sub, email, preferred_username = null } = req.userData;
 
       const golfer = await golferService.getOrCreateGolferFromIdentity({
         sub,
         email,
-        preferredUsername,
+        preferredUsername: preferred_username,
       });
 
       return res.status(200).json({
