@@ -1,36 +1,33 @@
 // src/app/createApp.js
+
 const express = require("express");
 const cors = require("cors");
 const helmet = require("helmet");
 
-async function createApp({ buildServiceContainer }) {
-  try {
-    const app = express();
+const { buildServiceContainer } = require("../modules/build-service-container");
 
-    let servicesContainer = await buildServiceContainer();
+async function createApp({ database } = {}) {
+  const app = express();
 
-    const corsOptions = {
-      origin: [
-        "http://localhost:5173",
-        //, 'https://my-app.com'
-      ],
-    };
-    app.use(helmet());
-    app.use(cors(corsOptions));
-    app.use(express.json());
+  const corsOptions = {
+    origin: [
+      "http://localhost:5173",
+      //, 'https://my-app.com'
+    ],
+  };
+  app.use(helmet());
+  app.use(cors(corsOptions));
+  app.use(express.json());
 
-    // Example unprotected route
-    app.get("/health", (req, res) => res.json({ ok: true }));
+  //One health check route;
+  app.get("/health", (req, res) => res.json({ ok: true }));
 
-    const { golferRoutes } = servicesContainer.routes;
+  let servicesContainer = await buildServiceContainer({ database });
 
-    app.use(golferRoutes);
+  const { golferRoutes } = servicesContainer.routes;
+  app.use(golferRoutes);
 
-    return { app };
-  } catch (e) {
-    console.log("e? ", e);
-    return null;
-  }
+  return { app };
 }
 
 module.exports = { createApp };
