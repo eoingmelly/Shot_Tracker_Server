@@ -4,10 +4,6 @@ const { createIdentityModule } = require("../index");
 const { IdentityService } = require("../application/identity-service");
 
 describe("identity module (index)", () => {
-  test("throws if golferRepository missing", () => {
-    expect(() => createIdentityModule({})).toThrow("golferRepository");
-  });
-
   test("creates IdentityService with injected identityProvider override", () => {
     const fakeRepo = {};
     const fakeProvider = {};

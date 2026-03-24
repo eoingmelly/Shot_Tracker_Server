@@ -2,19 +2,12 @@
 class IdentityService {
   /**
    * @param {Object} deps
-   * @param {Object} deps.golferRepository - your existing golfer repo (domain interface)
    * @param {Object} deps.identityProvider - implements IIdentityProvider
    */
-  constructor({
-    //golferRepository,
-    identityProvider,
-  }) {
-    // if (!golferRepository)
-    //   throw new Error("IdentityService requires { golferRepository }");
+  constructor({ identityProvider }) {
     if (!identityProvider)
       throw new Error("IdentityService requires { identityProvider }");
 
-    //this._golferRepository = golferRepository;
     this._identityProvider = identityProvider;
   }
 
@@ -60,14 +53,6 @@ class IdentityService {
     await this._identityProvider.addUserToGroup({ email, groupName });
   }
 
-  async forceSignOut({ userId }) {
-    if (!userId) throw new Error("forceSignOut requires { userId }");
-
-    const golfer = await this._getUserOrThrow(userId);
-    const email = this._getEmailOrThrow(golfer, userId);
-    await this._identityProvider.forceSignOut({ email });
-  }
-
   async setPermanentPassword({ email, permanentPassword }) {
     const response = await this._identityProvider.setPassword({
       email,
@@ -76,16 +61,6 @@ class IdentityService {
     });
 
     return response;
-  }
-
-  //Internal Helpers:
-  async _getUserOrThrow(userId) {
-    if (!userId) throw new Error("userId required");
-
-    const golfer = await this._golferRepository.getById(userId);
-    if (!golfer) throw new Error(`golfer not found for userId=${userId}`);
-
-    return golfer;
   }
 
   _getEmailOrThrow(golfer, userId) {
