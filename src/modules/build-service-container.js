@@ -7,7 +7,7 @@ const {
 const { createGolferModule } = require("./golfer");
 //const { createIdentityModule } = require("./identity");
 
-async function buildServiceContainer() {
+async function buildServiceContainer({ database }) {
   const { authenticationService } = await createAuthenticationService();
   const expressAuthMiddleware = await createAuthHttpMiddleware({
     authenticationService,
@@ -15,6 +15,7 @@ async function buildServiceContainer() {
 
   const { golferService, golferRoutes } = await createGolferModule({
     expressAuthMiddleware,
+    database,
   });
 
   //const identityService = await createIdentityModule();

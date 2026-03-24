@@ -16,13 +16,7 @@ const {
  * @param {Object} [deps.config.clientConfig] - optional AWS SDK client config
  * @param {Object} [deps.identityProvider] - optional override (swap provider / tests)
  */
-function createIdentityModule({
-  //golferRepository,
-  identityProvider,
-} = {}) {
-  //if (!golferRepository)
-  //throw new Error("createIdentityModule requires { golferRepository }");
-
+function createIdentityModule({ identityProvider } = {}) {
   //Default to cognito identity provider...
   const provider =
     identityProvider ||
@@ -32,7 +26,6 @@ function createIdentityModule({
     });
 
   const identityService = new IdentityService({
-    //golferRepository,
     identityProvider: provider,
   });
 

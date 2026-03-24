@@ -1,16 +1,33 @@
 // src/server.js
-require("dotenv").config();
 
-const { buildServiceContainer } = require("./modules/build-service-container");
+require("dotenv").config();
 const { createApp } = require("./app/createApp");
+const {
+  createDatabaseClient,
+} = require("./infrastructure/persistence/create-database-client");
+const {
+  handleShutdownGracefully,
+} = require("./infrastructure/runtime/handle-shutdown-gracefully");
+
+const PORT = process.env.PORT || 3000;
 
 async function startServer() {
-  const { app } = await createApp({ buildServiceContainer });
+  const database = await createDatabaseClient();
+  const { app } = await createApp({ database });
 
-  const PORT = process.env.PORT || 3000;
-  app.listen(PORT, () => {
-    console.log(`Server listening on ${PORT}`);
+  const server = app.listen(PORT, () => {
+    console.log(`Server listening on port ${PORT}`);
   });
+
+  handleShutdownGracefully({
+    server,
+    database,
+  });
+
+  return { app, server, database };
 }
 
-startServer();
+startServer().catch((error) => {
+  console.error("Failed to start server:", error);
+  process.exit(1);
+});

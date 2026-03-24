@@ -39,7 +39,7 @@ describe("createGetMeHandler", () => {
         userData: {
           sub: "abc-123",
           email: "test@example.com",
-          preferredUsername: "tester",
+          preferred_username: "tester",
         },
       };
 
@@ -66,6 +66,7 @@ describe("createGetMeHandler", () => {
       expect(
         mockGolferService.getOrCreateGolferFromIdentity,
       ).toHaveBeenCalledTimes(1);
+
       expect(
         mockGolferService.getOrCreateGolferFromIdentity,
       ).toHaveBeenCalledWith({
