@@ -14,7 +14,6 @@ class ShotStat {
     shotStatType,
   }) {
     this.id = id;
-
     this.golferId = golferId;
     this.preStrokesGainedLie = preStrokesGainedLie;
     this.postStrokesGainedLie = postStrokesGainedLie;
