@@ -1,5 +1,7 @@
 const { HoleStat } = require("../../../../domain/entities/hole-stat");
 
+const { ObjectId } = require("mongoose").Types;
+
 class HoleStatMapper {
   toDomain({ holeStatDocument }) {
     if (!holeStatDocument) {
@@ -8,8 +10,8 @@ class HoleStatMapper {
 
     return new HoleStat({
       id: holeStatDocument._id.toString(),
-      roundStatId: holeStatDocument.roundStatId,
-      golferId: holeStatDocument.golferId,
+      roundStatId: holeStatDocument.roundStatId.toString(),
+      golferId: holeStatDocument.golferId.toString(),
       holeNumber: holeStatDocument.holeNumber,
     });
   }
@@ -20,9 +22,8 @@ class HoleStatMapper {
     }
 
     return {
-      id: holeStat.id,
-      roundStatId: holeStat.roundStatId,
-      golferId: holeStat.golferId,
+      roundStatId: new ObjectId(holeStat.roundStatId),
+      golferId: new ObjectId(holeStat.golferId),
       holeNumber: holeStat.holeNumber,
     };
   }

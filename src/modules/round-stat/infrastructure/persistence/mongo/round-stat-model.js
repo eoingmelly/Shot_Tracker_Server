@@ -4,7 +4,8 @@ const Schema = mongoose.Schema;
 const RoundStatSchema = new Schema(
   {
     course: { type: Schema.Types.ObjectId, ref: "GolfCourse" },
-    date: { type: Date },
+    golferId: { type: Schema.Types.ObjectId, ref: "Golfer" },
+    datePlayed: { type: Date },
   },
   { timestamps: true },
 );

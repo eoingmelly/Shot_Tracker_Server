@@ -8,8 +8,8 @@ class HoleStatService {
   }
 
   async createHoleStat({ roundStatId, golferId, holeNumber }) {
-    if (!datePlayed) {
-      throw new Error("createHoleStat requires { datePlayed }");
+    if (!golferId) {
+      throw new Error("createHoleStat requires { golferId }");
     }
 
     const holeStat = {

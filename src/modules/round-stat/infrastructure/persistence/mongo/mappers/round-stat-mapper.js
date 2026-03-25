@@ -1,5 +1,7 @@
 const { RoundStat } = require("../../../../domain/entities/round-stat");
 
+const { ObjectId } = require("mongoose").Types;
+
 class RoundStatMapper {
   toDomain({ roundStatDocument }) {
     if (!roundStatDocument) {
@@ -10,8 +12,9 @@ class RoundStatMapper {
 
     return new RoundStat({
       id: roundStatDocument._id.toString(),
-      course: roundStatDocument.course,
+      course: roundStatDocument.course.toString(),
       datePlayed: roundStatDocument.datePlayed,
+      golferId: roundStatDocument.golferId.toString(),
     });
   }
 
@@ -21,9 +24,9 @@ class RoundStatMapper {
     }
 
     return {
-      id: roundStat.id,
-      course: roundStat.course,
+      course: new ObjectId(roundStat.course),
       datePlayed: roundStat.datePlayed,
+      golferId: new ObjectId(roundStat.golferId),
     };
   }
 }
