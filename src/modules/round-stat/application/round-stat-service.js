@@ -7,25 +7,15 @@ class RoundStatService {
     this._roundStatRepository = roundStatRepository;
   }
 
-  async createRoundStat({
-    course,
-    datePlayed,
-    wind,
-    windBearing,
-    holeStats,
-    isComplete,
-  }) {
+  async createRoundStat({ courseId, datePlayed, golferId }) {
     if (!datePlayed) {
       throw new Error("createRoundStat requires { datePlayed }");
     }
 
     const roundStat = {
-      course,
+      courseId,
+      golferId,
       datePlayed,
-      wind,
-      windBearing,
-      holeStats,
-      isComplete,
     };
 
     return this._roundStatRepository.create({ roundStat });

@@ -12,7 +12,7 @@ class RoundStatMapper {
 
     return new RoundStat({
       id: roundStatDocument._id.toString(),
-      course: roundStatDocument.course.toString(),
+      courseId: roundStatDocument.courseId.toString(),
       datePlayed: roundStatDocument.datePlayed,
       golferId: roundStatDocument.golferId.toString(),
     });
@@ -24,7 +24,7 @@ class RoundStatMapper {
     }
 
     return {
-      course: new ObjectId(roundStat.course),
+      courseId: new ObjectId(roundStat.courseId),
       datePlayed: roundStat.datePlayed,
       golferId: new ObjectId(roundStat.golferId),
     };

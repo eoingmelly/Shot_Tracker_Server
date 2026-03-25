@@ -1,7 +1,7 @@
 class RoundStat {
-  constructor({ id, course, golferId, datePlayed }) {
+  constructor({ id, courseId, golferId, datePlayed }) {
     this.id = id;
-    this.course = course;
+    this.courseId = courseId;
     this.golferId = golferId;
     this.datePlayed = datePlayed;
   }
