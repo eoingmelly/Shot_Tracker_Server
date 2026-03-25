@@ -21,7 +21,7 @@ class RoundStatMapper {
     }
 
     return {
-      id: roundStat.golferId,
+      id: roundStat.id,
       course: roundStat.course,
       datePlayed: roundStat.datePlayed,
     };

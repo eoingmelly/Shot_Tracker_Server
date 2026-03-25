@@ -1,8 +1,9 @@
 const mongoose = require("mongoose");
 
+const { ObjectId } = mongoose.Schema;
 const ShotStatSchema = new mongoose.Schema(
   {
-    golferId: { type: String, required: true, index: true },
+    golferId: { type: ObjectId, ref: "Golfer", required: true, index: true },
 
     // simple fields
     preStrokesGainedLie: { type: String, required: true },
