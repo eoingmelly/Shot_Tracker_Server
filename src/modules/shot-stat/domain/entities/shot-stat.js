@@ -3,6 +3,8 @@ class ShotStat {
   constructor({
     id,
     golferId,
+    holeStatId,
+    roundStatId,
     preStrokesGainedLie,
     postStrokesGainedLie,
     preStrokeDistanceToPin,
@@ -15,7 +17,9 @@ class ShotStat {
   }) {
     this.id = id;
     this.golferId = golferId;
-    this.preStrokesGainedLie = preStrokesGainedLie;
+    ((this.holeStatId = holeStatId),
+      (this.roundStatId = roundStatId),
+      (this.preStrokesGainedLie = preStrokesGainedLie));
     this.postStrokesGainedLie = postStrokesGainedLie;
     this.preStrokeDistanceToPin = preStrokeDistanceToPin;
     this.postStrokeDistanceToPin = postStrokeDistanceToPin;

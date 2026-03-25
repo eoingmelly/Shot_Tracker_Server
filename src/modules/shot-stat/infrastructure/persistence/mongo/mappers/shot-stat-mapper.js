@@ -1,5 +1,7 @@
 const { ShotStat } = require("../../../../domain/entities/shot-stat");
 
+const { ObjectId } = require("mongoose").Types;
+
 class ShotStatMapper {
   toDomain({ shotStatDocument }) {
     if (!shotStatDocument) {
@@ -8,7 +10,9 @@ class ShotStatMapper {
 
     return new ShotStat({
       id: shotStatDocument._id.toString(),
-      golferId: shotStatDocument.golferId,
+      golferId: shotStatDocument.golferId.toString(),
+      holeStatId: shotStatDocument.holeStatId.toString(),
+      roundStatId: shotStatDocument.roundStatId.toString(),
       preStrokesGainedLie: shotStatDocument.preStrokesGainedLie,
       postStrokesGainedLie: shotStatDocument.postStrokesGainedLie,
       preStrokeDistanceToPin: shotStatDocument.preStrokeDistanceToPin,
@@ -27,7 +31,9 @@ class ShotStatMapper {
     }
 
     return {
-      golferId: shotStat.golferId,
+      golferId: new ObjectId(shotStat.golferId),
+      holeStatId: new ObjectId(shotStat.holeStatId) ?? null,
+      roundStatId: new ObjectId(shotStat.roundStatId) ?? null,
       preStrokesGainedLie: shotStat.preStrokesGainedLie,
       preStrokeDistanceToPin: shotStat.preStrokeDistanceToPin,
       postStrokesGainedLie: shotStat.postStrokesGainedLie,

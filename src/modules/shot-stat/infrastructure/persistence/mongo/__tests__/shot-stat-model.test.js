@@ -1,4 +1,5 @@
 const { ShotStatModel } = require("../shot-stat-model");
+const { ObjectId } = require("mongoose").Types;
 
 describe("ShotStatModel", () => {
   describe("model configuration", () => {
@@ -10,7 +11,7 @@ describe("ShotStatModel", () => {
       const path = ShotStatModel.schema.path("golferId");
 
       expect(path).toBeDefined();
-      expect(path.instance).toBe("String");
+      expect(path.instance).toBe("ObjectId");
       expect(path.isRequired).toBe(true);
       expect(path.options.index).toBe(true);
     });
@@ -127,8 +128,10 @@ describe("ShotStatModel", () => {
     });
 
     test("passes validation with required fields", () => {
+      const golferId = new ObjectId("69c44c385ad4f3562e03ebb4");
+
       const doc = new ShotStatModel({
-        golferId: "golfer-1",
+        golferId: golferId,
         preStrokesGainedLie: "tee",
         postStrokesGainedLie: "fairway",
         preStrokeDistanceToPin: 420,
