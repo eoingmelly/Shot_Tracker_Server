@@ -5,6 +5,7 @@ const ShotStatSchema = new mongoose.Schema(
   {
     golferId: { type: ObjectId, ref: "Golfer", required: true, index: true },
 
+    holeStatId: { type: ObjectId, ref: "HoleStat" },
     // simple fields
     preStrokesGainedLie: { type: String, required: true },
     postStrokesGainedLie: { type: String, required: true },
