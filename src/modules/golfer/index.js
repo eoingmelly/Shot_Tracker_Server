@@ -11,6 +11,10 @@ const {
 const { createGetMeHandler } = require("./infrastructure/http/get-me-handler");
 const { createGolferRoutes } = require("./infrastructure/http/golfer-routes");
 
+const {
+  GolferLookupAdapter,
+} = require("./infrastructure/adapters/golfer-lookup-adapter");
+
 function _createGolferRepository({ database }) {
   const databaseType = database?.type || "mongo";
 
@@ -61,9 +65,12 @@ function createGolferModule({ expressAuthMiddleware, database } = {}) {
     getMeHandler,
   });
 
+  const golferLookupAdapter = new GolferLookupAdapter({ golferService });
+
   return {
     golferService,
     golferRoutes,
+    golferLookupAdapter,
   };
 }
 

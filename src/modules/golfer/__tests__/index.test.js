@@ -1,3 +1,9 @@
+jest.mock("../infrastructure/adapters/golfer-lookup-adapter", () => {
+  return {
+    GolferLookupAdapter: jest.fn(),
+  };
+});
+
 jest.mock("../application/golfer-service", () => {
   return {
     GolferService: jest.fn(),
@@ -51,6 +57,10 @@ const {
 const { createGetMeHandler } = require("../infrastructure/http/get-me-handler");
 const { createGolferRoutes } = require("../infrastructure/http/golfer-routes");
 
+const {
+  GolferLookupAdapter,
+} = require("../infrastructure/adapters/golfer-lookup-adapter");
+
 describe("createGolferModule", () => {
   beforeEach(() => {
     jest.clearAllMocks();
@@ -70,7 +80,9 @@ describe("createGolferModule", () => {
     const golferService = { kind: "golfer-service" };
     const getMeHandler = jest.fn();
     const golferRoutes = { kind: "golfer-routes" };
+    const golferLookupAdapter = { kind: "golfer-lookup-adapter" };
 
+    GolferLookupAdapter.mockImplementation(() => golferLookupAdapter);
     GolferMapper.mockImplementation(() => golferMapper);
     MongooseGolferRepository.mockImplementation(() => golferRepository);
     GolferService.mockImplementation(() => golferService);
@@ -105,7 +117,9 @@ describe("createGolferModule", () => {
       getMeHandler,
     });
 
+    console.log("result? ", result);
     expect(result).toEqual({
+      golferLookupAdapter,
       golferService,
       golferRoutes,
     });
