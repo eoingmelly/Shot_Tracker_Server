@@ -76,7 +76,7 @@ describe("RoundStatService", () => {
 
   describe("updateRoundStat", () => {
     test("passes id and updates to repository.update", async () => {
-      const updated = { id: "round-1", course: "Pebble" };
+      const updated = { id: "round-1", courseId: "Pebble" };
 
       const mockRepository = {
         create: jest.fn(),
@@ -90,12 +90,12 @@ describe("RoundStatService", () => {
 
       const result = await service.updateRoundStat({
         id: "round-1",
-        updates: { course: "Pebble" },
+        updates: { courseId: "Pebble" },
       });
 
       expect(mockRepository.update).toHaveBeenCalledWith({
         id: "round-1",
-        roundStat: { course: "Pebble" },
+        roundStat: { courseId: "Pebble" },
       });
 
       expect(result).toBe(updated);
