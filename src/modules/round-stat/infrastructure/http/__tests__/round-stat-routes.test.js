@@ -18,12 +18,12 @@ const { createRoundStatRoutes } = require("../round-stat-routes");
 describe("createRoundStatRoutes", () => {
   let expressAuthMiddleware;
   let getRoundStatHandler;
-  let getCreateRoundStatHandler;
+  let createRoundStatHandler;
 
   beforeEach(() => {
     expressAuthMiddleware = jest.fn();
     getRoundStatHandler = jest.fn();
-    getCreateRoundStatHandler = jest.fn();
+    createRoundStatHandler = jest.fn();
 
     express.Router.mockClear();
     express.__mockedGet.mockClear();
@@ -34,7 +34,7 @@ describe("createRoundStatRoutes", () => {
     expect(() => {
       createRoundStatRoutes({
         getRoundStatHandler,
-        getCreateRoundStatHandler,
+        createRoundStatHandler,
       });
     }).toThrow("createRoundStatRoutes requires { expressAuthMiddleware }");
   });
@@ -43,25 +43,25 @@ describe("createRoundStatRoutes", () => {
     expect(() => {
       createRoundStatRoutes({
         expressAuthMiddleware,
-        getCreateRoundStatHandler,
+        createRoundStatHandler,
       });
     }).toThrow("createRoundStatRoutes requires { getRoundStatHandler }");
   });
 
-  test("throws when getCreateRoundStatHandler is not provided", () => {
+  test("throws when createRoundStatHandler is not provided", () => {
     expect(() => {
       createRoundStatRoutes({
         expressAuthMiddleware,
         getRoundStatHandler,
       });
-    }).toThrow("createRoundStatRoutes requires { getCreateRoundStatHandler }");
+    }).toThrow("createRoundStatRoutes requires { createRoundStatHandler }");
   });
 
   test("registers round-stat routes", () => {
     const result = createRoundStatRoutes({
       expressAuthMiddleware,
       getRoundStatHandler,
-      getCreateRoundStatHandler,
+      createRoundStatHandler,
     });
 
     expect(express.Router).toHaveBeenCalledTimes(1);
@@ -75,7 +75,7 @@ describe("createRoundStatRoutes", () => {
     expect(express.__mockedPost).toHaveBeenCalledWith(
       "/round-stats",
       expressAuthMiddleware,
-      getCreateRoundStatHandler,
+      createRoundStatHandler,
     );
 
     expect(result).toEqual({

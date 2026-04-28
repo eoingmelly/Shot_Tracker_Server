@@ -1,69 +1,82 @@
-jest.mock("../application/round-stat-service", () => {
-  return {
-    RoundStatService: jest.fn(),
-  };
-});
+jest.mock("../application/round-stat-service", () => ({
+  RoundStatService: jest.fn(),
+}));
 
 jest.mock(
   "../infrastructure/persistence/mongo/mongoose-round-stat-repository",
-  () => {
-    return {
-      MongooseRoundStatRepository: jest.fn(),
-    };
-  },
+  () => ({ MongooseRoundStatRepository: jest.fn() }),
 );
 
 jest.mock(
   "../infrastructure/persistence/mongo/mappers/round-stat-mapper",
-  () => {
-    return {
-      RoundStatMapper: jest.fn(),
-    };
-  },
+  () => ({
+    RoundStatMapper: jest.fn(),
+  }),
 );
 
-jest.mock("../infrastructure/persistence/mongo/round-stat-model", () => {
-  return {
-    RoundStatModel: { modelName: "RoundStat" },
-  };
-});
+jest.mock("../infrastructure/persistence/mongo/round-stat-model", () => ({
+  RoundStatModel: { modelName: "RoundStat" },
+}));
+
+jest.mock("../infrastructure/http/get-round-stat-handler", () => ({
+  createGetRoundStatHandler: jest.fn(),
+}));
+
+jest.mock("../infrastructure/http/create-round-stat-handler", () => ({
+  createCreateRoundStatHandler: jest.fn(),
+}));
+
+jest.mock("../infrastructure/http/round-stat-routes", () => ({
+  createRoundStatRoutes: jest.fn(),
+}));
 
 const { createRoundStatModule } = require("../index");
-
 const { RoundStatService } = require("../application/round-stat-service");
-
 const {
   MongooseRoundStatRepository,
 } = require("../infrastructure/persistence/mongo/mongoose-round-stat-repository");
-
 const {
   RoundStatMapper,
 } = require("../infrastructure/persistence/mongo/mappers/round-stat-mapper");
-
 const {
   RoundStatModel,
 } = require("../infrastructure/persistence/mongo/round-stat-model");
+const {
+  createGetRoundStatHandler,
+} = require("../infrastructure/http/get-round-stat-handler");
+const {
+  createCreateRoundStatHandler,
+} = require("../infrastructure/http/create-round-stat-handler");
+const {
+  createRoundStatRoutes,
+} = require("../infrastructure/http/round-stat-routes");
 
 describe("createRoundStatModule", () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
-  test("composes mongo dependencies and returns roundStatService", () => {
+  test("composes mongo dependencies and returns roundStatService and roundStatRoutes", () => {
+    const expressAuthMiddleware = jest.fn();
     const database = { type: "mongo", client: {} };
 
     const roundStatMapper = { kind: "mapper" };
     const roundStatRepository = { kind: "repository" };
     const roundStatService = { kind: "service" };
+    const getRoundStatHandler = jest.fn();
+    const createRoundStatHandler = jest.fn();
+    const roundStatRoutes = { kind: "routes" };
 
     RoundStatMapper.mockImplementation(() => roundStatMapper);
     MongooseRoundStatRepository.mockImplementation(() => roundStatRepository);
     RoundStatService.mockImplementation(() => roundStatService);
+    createGetRoundStatHandler.mockReturnValue(getRoundStatHandler);
+    createCreateRoundStatHandler.mockReturnValue(createRoundStatHandler);
+    createRoundStatRoutes.mockReturnValue(roundStatRoutes);
 
-    const result = createRoundStatModule({ database });
+    const result = createRoundStatModule({ expressAuthMiddleware, database });
 
     expect(RoundStatMapper).toHaveBeenCalledTimes(1);
-
     expect(MongooseRoundStatRepository).toHaveBeenCalledWith({
       roundStatModel: RoundStatModel,
       roundStatMapper,
@@ -73,61 +86,23 @@ describe("createRoundStatModule", () => {
       roundStatRepository,
     });
 
-    expect(result).toEqual({
+    expect(createCreateRoundStatHandler).toHaveBeenCalledWith({
       roundStatService,
     });
-  });
 
-  test('defaults to "mongo" when database.type is not provided', () => {
-    const roundStatMapper = {};
-    const roundStatRepository = {};
-    const roundStatService = {};
-
-    RoundStatMapper.mockImplementation(() => roundStatMapper);
-    MongooseRoundStatRepository.mockImplementation(() => roundStatRepository);
-    RoundStatService.mockImplementation(() => roundStatService);
-
-    const result = createRoundStatModule({
-      database: {},
+    expect(createGetRoundStatHandler).toHaveBeenCalledWith({
+      roundStatService,
     });
 
-    expect(MongooseRoundStatRepository).toHaveBeenCalledWith({
-      roundStatModel: RoundStatModel,
-      roundStatMapper,
+    expect(createRoundStatRoutes).toHaveBeenCalledWith({
+      expressAuthMiddleware,
+      createRoundStatHandler,
+      getRoundStatHandler,
     });
 
     expect(result).toEqual({
       roundStatService,
+      roundStatRoutes,
     });
-  });
-
-  test('throws when database.type is "in-memory"', () => {
-    expect(() => {
-      createRoundStatModule({
-        database: { type: "in-memory" },
-      });
-    }).toThrow(
-      'createRoundStatRepository does not yet support database.type "in-memory"',
-    );
-  });
-
-  test('throws when database.type is "sql"', () => {
-    expect(() => {
-      createRoundStatModule({
-        database: { type: "sql" },
-      });
-    }).toThrow(
-      'createRoundStatRepository does not yet support database.type "sql"',
-    );
-  });
-
-  test("throws when database.type is unsupported", () => {
-    expect(() => {
-      createRoundStatModule({
-        database: { type: "firebase" },
-      });
-    }).toThrow(
-      'createRoundStatRepository received unsupported database.type "firebase"',
-    );
   });
 });

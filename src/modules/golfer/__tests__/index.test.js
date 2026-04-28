@@ -117,7 +117,6 @@ describe("createGolferModule", () => {
       getMeHandler,
     });
 
-    console.log("result? ", result);
     expect(result).toEqual({
       golferLookupAdapter,
       golferService,
