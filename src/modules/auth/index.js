@@ -19,7 +19,9 @@ async function createAuthenticationService() {
     cognitoJwtVerifier,
   });
 
-  const authenticationService = new AuthService({ tokenVerifier });
+  const authenticationService = new AuthService({
+    tokenVerifier,
+  });
 
   // Convention: return an object
   return { authenticationService };

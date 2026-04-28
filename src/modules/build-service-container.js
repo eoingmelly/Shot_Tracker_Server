@@ -17,10 +17,13 @@ async function buildServiceContainer({ database }) {
     authenticationService,
   });
 
-  const { golferService, golferRoutes } = await createGolferModule({
-    expressAuthMiddleware,
-    database,
-  });
+  const { golferService, golferRoutes, golferLookupAdapter } =
+    await createGolferModule({
+      expressAuthMiddleware,
+      database,
+    });
+
+  authenticationService.lazyLoadGolferLookupAdapter({ golferLookupAdapter });
 
   const { holeStatService } = await createHoleStatModule({
     database,

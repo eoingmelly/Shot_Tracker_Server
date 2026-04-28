@@ -8,6 +8,7 @@ class AuthService {
     }
 
     this._tokenVerifier = tokenVerifier;
+    this._golferLookupAdapter = null;
   }
 
   async authenticate(token) {
@@ -16,10 +17,24 @@ class AuthService {
     }
     const trimmedToken = token.trim();
     try {
-      return await this._tokenVerifier.verify(trimmedToken);
+      const verifyResult = await this._tokenVerifier.verify(trimmedToken);
+
+      if (verifyResult) {
+        const { sub } = verifyResult;
+
+        verifyResult.golferId = await this._golferLookupAdapter.getGolferId({
+          sub,
+        });
+      }
+      return verifyResult;
     } catch (err) {
       throw err;
     }
+  }
+
+  async lazyLoadGolferLookupAdapter({ golferLookupAdapter }) {
+    if (!this._golferLookupAdapter)
+      this._golferLookupAdapter = golferLookupAdapter;
   }
 }
 
