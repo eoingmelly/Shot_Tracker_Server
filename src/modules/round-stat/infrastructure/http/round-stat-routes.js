@@ -3,7 +3,7 @@ const express = require("express");
 function createRoundStatRoutes({
   expressAuthMiddleware,
   getRoundStatHandler,
-  getCreateRoundStatHandler,
+  createRoundStatHandler,
 }) {
   if (!expressAuthMiddleware)
     throw new Error("createRoundStatRoutes requires { expressAuthMiddleware }");
@@ -11,16 +11,16 @@ function createRoundStatRoutes({
   if (!getRoundStatHandler)
     throw new Error("createRoundStatRoutes requires { getRoundStatHandler }");
 
-  if (!getCreateRoundStatHandler) {
+  if (!createRoundStatHandler) {
     throw new Error(
-      "createRoundStatRoutes requires { getCreateRoundStatHandler }",
+      "createRoundStatRoutes requires { createRoundStatHandler }",
     );
   }
 
   const router = express.Router();
 
   router.get("/round-stats/:id", expressAuthMiddleware, getRoundStatHandler);
-  router.post("/round-stats", expressAuthMiddleware, getCreateRoundStatHandler);
+  router.post("/round-stats", expressAuthMiddleware, createRoundStatHandler);
 
   return { roundStatRoutes: router };
 }

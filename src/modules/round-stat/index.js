@@ -12,6 +12,17 @@ const {
   RoundStatModel,
 } = require("./infrastructure/persistence/mongo/round-stat-model");
 
+const {
+  createRoundStatRoutes,
+} = require("./infrastructure/http/round-stat-routes");
+
+const {
+  createGetRoundStatHandler,
+} = require("./infrastructure/http/get-round-stat-handler");
+const {
+  createCreateRoundStatHandler,
+} = require("./infrastructure/http/create-round-stat-handler");
+
 function createRoundStatRepository({ database }) {
   const databaseType = database?.type || "mongo";
 
@@ -42,15 +53,27 @@ function createRoundStatRepository({ database }) {
   }
 }
 
-function createRoundStatModule({ database } = {}) {
+function createRoundStatModule({ expressAuthMiddleware, database } = {}) {
   const roundStatRepository = createRoundStatRepository({ database });
 
   const roundStatService = new RoundStatService({
     roundStatRepository,
   });
 
+  const createRoundStatHandler = createCreateRoundStatHandler({
+    roundStatService,
+  });
+  const getRoundStatHandler = createGetRoundStatHandler({ roundStatService });
+
+  const roundStatRoutes = createRoundStatRoutes({
+    expressAuthMiddleware,
+    createRoundStatHandler,
+    getRoundStatHandler,
+  });
+
   return {
     roundStatService,
+    roundStatRoutes,
   };
 }
 

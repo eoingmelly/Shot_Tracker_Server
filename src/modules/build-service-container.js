@@ -26,13 +26,16 @@ async function buildServiceContainer({ database }) {
   authenticationService.lazyLoadGolferLookupAdapter({ golferLookupAdapter });
 
   const { holeStatService } = await createHoleStatModule({
+    expressAuthMiddleware,
     database,
   });
 
-  const { roundStatService } = await createRoundStatModule({
+  const { roundStatService, roundStatRoutes } = await createRoundStatModule({
+    expressAuthMiddleware,
     database,
   });
   const { shotStatService } = await createShotStatModule({
+    expressAuthMiddleware,
     database,
   });
 
@@ -51,6 +54,7 @@ async function buildServiceContainer({ database }) {
     },
     routes: {
       golferRoutes,
+      roundStatRoutes,
     },
   };
 }
