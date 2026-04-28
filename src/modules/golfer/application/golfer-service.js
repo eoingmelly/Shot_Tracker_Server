@@ -37,6 +37,13 @@ class GolferService {
 
     return await this._golferRepository.create({ golfer });
   }
+
+  async getGolferIdBySub({ sub }) {
+    if (!sub)
+      throw new Error("GolferService.getGolferIdBySub requires { sub }");
+
+    return await this._golferRepository.findBySub({ sub });
+  }
 }
 
 module.exports = { GolferService };

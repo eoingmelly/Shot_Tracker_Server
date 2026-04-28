@@ -152,4 +152,25 @@ describe("GolferService", () => {
       expect(result.preferredUsername).toBeNull();
     });
   });
+
+  describe("getGolferIdBySub", () => {
+    test("Calls repo findBySub when provided", () => {
+      const mockGolferRepository = {
+        findBySub: jest.fn(),
+      };
+
+      const golferService = new GolferService({
+        golferRepository: mockGolferRepository,
+      });
+
+      mockGolferRepository.findBySub.mockResolvedValue({
+        id: "id1",
+        sub: "sub",
+      });
+
+      golferService.getGolferIdBySub({ sub: "Subby" });
+
+      expect(mockGolferRepository.findBySub).toHaveBeenCalledTimes(1);
+    });
+  });
 });
