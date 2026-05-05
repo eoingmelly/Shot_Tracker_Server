@@ -1,6 +1,6 @@
 const { Course } = require("../../../../domain/entities/course");
 
-class CourseMapper {
+class MongoCourseMapper {
   constructor() {}
 
   toDomain({ courseDocument }) {
@@ -11,6 +11,7 @@ class CourseMapper {
     return new Course({
       id: courseDocument._id.toString(),
       name: courseDocument.name,
+      createdBy: courseDocument.createdBy,
     });
   }
 
@@ -26,4 +27,4 @@ class CourseMapper {
   }
 }
 
-module.exports = { CourseMapper };
+module.exports = { MongoCourseMapper };

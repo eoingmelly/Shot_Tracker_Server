@@ -8,6 +8,7 @@ const { createGolferModule } = require("./golfer");
 const { createHoleStatModule } = require("./hole-stat");
 const { createRoundStatModule } = require("./round-stat");
 const { createShotStatModule } = require("./shot-stat");
+const { createCourseModule } = require("./course");
 
 //const { createIdentityModule } = require("./identity");
 
@@ -34,6 +35,11 @@ async function buildServiceContainer({ database }) {
     expressAuthMiddleware,
     database,
   });
+
+  const { courseService, courseRoutes } = await createCourseModule({
+    expressAuthMiddleware,
+    database,
+  });
   const { shotStatService } = await createShotStatModule({
     expressAuthMiddleware,
     database,
@@ -55,6 +61,7 @@ async function buildServiceContainer({ database }) {
     routes: {
       golferRoutes,
       roundStatRoutes,
+      courseRoutes,
     },
   };
 }

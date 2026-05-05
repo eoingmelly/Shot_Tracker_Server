@@ -1,79 +1,94 @@
 const { CourseService } = require("./application/course-service");
 const {
-  MongooseGolferRepository,
-} = require("./infrastructure/persistence/mongo/mongoose-golfer-repository");
+  MongoCourseRepository,
+} = require("./infrastructure/persistence/mongo/mongo-course-repository.js");
 const {
-  GolferMapper,
-} = require("./infrastructure/persistence/mongo/mappers/golfer-mapper");
+  MongoCourseMapper,
+} = require("./infrastructure/persistence/mongo/mappers/mongo-course-mapper.js");
 const {
-  GolferModel,
-} = require("./infrastructure/persistence/mongo/golfer-model");
-const { createGetMeHandler } = require("./infrastructure/http/get-me-handler");
-const { createGolferRoutes } = require("./infrastructure/http/golfer-routes");
+  CourseModel,
+} = require("./infrastructure/persistence/mongo/course-model.js");
 
 const {
-  GolferLookupAdapter,
-} = require("./infrastructure/adapters/golfer-lookup-adapter");
+  createGetCourseHandler,
+} = require("./infrastructure/http/get-course-handler");
 
-function _createGolferRepository({ database }) {
+const {
+  createGetCoursesHandler,
+} = require("./infrastructure/http/get-courses-handler");
+
+const {
+  createCreateCourseHandler,
+} = require("./infrastructure/http/create-course-handler.js");
+
+const { createCourseRoutes } = require("./infrastructure/http/course-routes");
+
+function _createCourseRepository({ database }) {
   const databaseType = database?.type || "mongo";
 
   switch (databaseType) {
     case "mongo": {
-      const golferMapper = new GolferMapper();
+      const mongoCourseMapper = new MongoCourseMapper();
 
-      return new MongooseGolferRepository({
-        golferModel: GolferModel,
-        golferMapper,
+      return new MongoCourseRepository({
+        courseModel: CourseModel,
+        mongoCourseMapper,
       });
     }
 
     case "in-memory":
       throw new Error(
-        'createGolferRepository does not yet support database.type "in-memory"',
+        'createCourseRepository does not yet support database.type "in-memory"',
       );
 
     case "sql":
       throw new Error(
-        'createGolferRepository does not yet support database.type "sql"',
+        'createCourseRepository does not yet support database.type "sql"',
       );
 
     default:
       throw new Error(
-        `createGolferRepository received unsupported database.type "${databaseType}"`,
+        `createCourseRepository received unsupported database.type "${databaseType}"`,
       );
   }
 }
 
-function createGolferModule({ expressAuthMiddleware, database } = {}) {
+function createCourseModule({ expressAuthMiddleware, database } = {}) {
   if (!expressAuthMiddleware) {
-    throw new Error("createGolferModule requires { expressAuthMiddleware }");
+    throw new Error("createCourseModule requires { expressAuthMiddleware }");
   }
 
-  const golferRepository = _createGolferRepository({ database });
+  const courseRepository = _createCourseRepository({ database });
 
-  const golferService = new GolferService({
-    golferRepository,
+  const courseService = new CourseService({
+    courseRepository,
   });
 
-  const getMeHandler = createGetMeHandler({
-    golferService,
+  const getCourseHandler = createGetCourseHandler({
+    courseService,
   });
 
-  const { golferRoutes } = createGolferRoutes({
+  const getCoursesHandler = createGetCoursesHandler({
+    courseService,
+  });
+
+  const createCourseHandler = createCreateCourseHandler({
+    courseService,
+  });
+
+  const { courseRoutes } = createCourseRoutes({
     expressAuthMiddleware,
-    getMeHandler,
+    getCourseHandler,
+    getCoursesHandler,
+    createCourseHandler,
   });
-
-  const golferLookupAdapter = new GolferLookupAdapter({ golferService });
 
   return {
-    golferService,
-    golferRoutes,
-    golferLookupAdapter,
+    courseService,
+    courseRoutes,
   };
 }
 
 module.exports = {
-  createGolferModule,
+  createCourseModule,
 };

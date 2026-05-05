@@ -1,7 +1,7 @@
 const { Course } = require("../domain/entities/course");
 
 class CourseService {
-  constructor({ courseRepository }) {
+  constructor({ courseRepository, golferlookupAdapter }) {
     if (!courseRepository)
       throw new Error("CourseService requires { courseRepository }");
 
@@ -11,12 +11,17 @@ class CourseService {
   async getCourseById({ id }) {
     if (!id) throw new Error("CourseService.getCourseById requires { id }");
 
-    const existingCourse = await this._courseRepository.findbyId({ id });
+    const existingCourse = await this._courseRepository.findById({ id });
+
     return existingCourse;
   }
 
   async getCourses() {
     return await this._courseRepository.find();
+  }
+
+  async createCourse({ course }) {
+    return await this._courseRepository.create({ course });
   }
 }
 

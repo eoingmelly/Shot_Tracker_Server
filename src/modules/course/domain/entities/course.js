@@ -1,8 +1,9 @@
 //modules/course/domain/entities
 class Course {
-  constructor({ id = null, name }) {
+  constructor({ id = null, name, createdBy }) {
     this.id = id;
-    this.sub = name;
+    this.name = name;
+    this.createdBy = createdBy;
     ///More
   }
 }

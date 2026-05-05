@@ -24,9 +24,12 @@ async function createApp({ database } = {}) {
 
   let servicesContainer = await buildServiceContainer({ database });
 
-  const { golferRoutes, roundStatRoutes } = servicesContainer.routes;
+  const { golferRoutes, roundStatRoutes, courseRoutes } =
+    servicesContainer.routes;
+
   app.use(golferRoutes);
   app.use(roundStatRoutes);
+  app.use(courseRoutes);
 
   return { app };
 }

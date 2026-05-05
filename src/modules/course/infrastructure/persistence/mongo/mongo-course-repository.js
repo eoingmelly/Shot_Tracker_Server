@@ -13,7 +13,7 @@ class MongoCourseRepository extends ICourseRepository {
     this._courseModel = courseModel;
   }
 
-  async find({}) {
+  async find() {
     if (!this._courseModel)
       throw new Error("Course Model required for mongoCourseRepo");
 
@@ -36,6 +36,7 @@ class MongoCourseRepository extends ICourseRepository {
   async create({ course }) {
     if (!this._courseModel)
       throw new Error("Course Model required for mongoCourseRepo");
+    console.log("course? ", course);
     const persistenceData = this._mongoCourseMapper.toPersistence({ course });
 
     const courseDocument = await this._courseModel.create(persistenceData);
@@ -58,3 +59,5 @@ class MongoCourseRepository extends ICourseRepository {
     return this._mongoCourseMapper.toDomain({ courseDocument });
   }
 }
+
+module.exports = { MongoCourseRepository };
