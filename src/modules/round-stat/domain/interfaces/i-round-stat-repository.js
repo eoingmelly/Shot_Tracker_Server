@@ -8,6 +8,9 @@ class IRoundStatRepository {
   async findById(data) {
     throw new Error("IRoundStatRepository.findById must be implemented");
   }
+  async find(data) {
+    throw new Error("IRoundStatRepository.find must be implemented");
+  }
   async update(data) {
     throw new Error("IRoundStatRepository.update must be implemented");
   }

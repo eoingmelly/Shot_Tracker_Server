@@ -7,6 +7,14 @@ class RoundStatService {
     this._roundStatRepository = roundStatRepository;
   }
 
+  async getRoundStats({ golferId }) {
+    const roundStats = await this._roundStatRepository.find({ golferId });
+
+    if (!roundStats) return null;
+
+    return roundStats;
+  }
+
   async getRoundStat({ roundId, golferId }) {
     if (!roundId) {
       throw new Error("getRoundStat requires { roundId }");

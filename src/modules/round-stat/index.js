@@ -19,6 +19,10 @@ const {
 const {
   createGetRoundStatHandler,
 } = require("./infrastructure/http/get-round-stat-handler");
+
+const {
+  createGetRoundStatsHandler,
+} = require("./infrastructure/http/get-round-stats-handler");
 const {
   createCreateRoundStatHandler,
 } = require("./infrastructure/http/create-round-stat-handler");
@@ -65,10 +69,13 @@ function createRoundStatModule({ expressAuthMiddleware, database } = {}) {
   });
   const getRoundStatHandler = createGetRoundStatHandler({ roundStatService });
 
-  const roundStatRoutes = createRoundStatRoutes({
+  const getRoundStatsHandler = createGetRoundStatsHandler({ roundStatService });
+
+  const { roundStatRoutes } = createRoundStatRoutes({
     expressAuthMiddleware,
     createRoundStatHandler,
     getRoundStatHandler,
+    getRoundStatsHandler,
   });
 
   return {

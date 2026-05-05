@@ -38,6 +38,15 @@ describe("IRoundStatRepository", () => {
       ).rejects.toThrow("IRoundStatRepository.findById must be implemented");
     });
   });
+  describe("find", () => {
+    test("throws not implemented error", async () => {
+      await expect(
+        repository.find({
+          id: "round-1",
+        }),
+      ).rejects.toThrow("IRoundStatRepository.find must be implemented");
+    });
+  });
 
   describe("update", () => {
     test("throws not implemented error", async () => {

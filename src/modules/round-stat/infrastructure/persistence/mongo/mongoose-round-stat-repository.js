@@ -32,6 +32,19 @@ class MongooseRoundStatRepository extends IRoundStatRepository {
     });
   }
 
+  async find({ golferId }) {
+    const doc = await this._roundStatModel.find({ golferId });
+
+    if (!doc) return null;
+    if (Array.isArray(doc) && doc?.length > 0) {
+      return this._roundStatMapper.toDomain({
+        roundStatDocument: doc,
+      });
+    } else {
+      return [];
+    }
+  }
+
   async findById({ id }) {
     const doc = await this._roundStatModel.findById(id);
 
