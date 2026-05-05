@@ -17,11 +17,15 @@ class CourseService {
   }
 
   async getCourses() {
-    return await this._courseRepository.find();
+    return await this._courseRepository.find({ includeInactive: false });
   }
 
   async createCourse({ course }) {
     return await this._courseRepository.create({ course });
+  }
+
+  async deleteCourse({ id }) {
+    return await this._courseRepository.delete({ id });
   }
 }
 

@@ -21,6 +21,10 @@ const {
   createCreateCourseHandler,
 } = require("./infrastructure/http/create-course-handler.js");
 
+const {
+  createDeleteCourseHandler,
+} = require("./infrastructure/http/delete-course-handler.js");
+
 const { createCourseRoutes } = require("./infrastructure/http/course-routes");
 
 function _createCourseRepository({ database }) {
@@ -76,11 +80,14 @@ function createCourseModule({ expressAuthMiddleware, database } = {}) {
     courseService,
   });
 
+  const deleteCourseHandler = createDeleteCourseHandler({ courseService });
+
   const { courseRoutes } = createCourseRoutes({
     expressAuthMiddleware,
     getCourseHandler,
     getCoursesHandler,
     createCourseHandler,
+    deleteCourseHandler,
   });
 
   return {

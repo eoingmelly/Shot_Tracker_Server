@@ -5,6 +5,7 @@ function createCourseRoutes({
   getCourseHandler,
   getCoursesHandler,
   createCourseHandler,
+  deleteCourseHandler,
 }) {
   if (!expressAuthMiddleware)
     throw new Error("createCoursesRoutes requires { expressAuthMiddleware }");
@@ -19,11 +20,16 @@ function createCourseRoutes({
     throw new Error("createCoursesRoutes requires { createCourseHandler }");
   }
 
+  if (!deleteCourseHandler) {
+    throw new Error("createCoursesRoutes requires { deleteCourseHandler }");
+  }
+
   const router = express.Router();
 
   router.get("/courses/:id", expressAuthMiddleware, getCourseHandler);
   router.get("/courses", expressAuthMiddleware, getCoursesHandler);
   router.post("/courses", expressAuthMiddleware, createCourseHandler);
+  router.delete("/courses/:id", expressAuthMiddleware, deleteCourseHandler);
 
   return { courseRoutes: router };
 }

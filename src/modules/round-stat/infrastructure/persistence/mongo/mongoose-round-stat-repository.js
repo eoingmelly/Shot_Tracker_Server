@@ -72,6 +72,7 @@ class MongooseRoundStatRepository extends IRoundStatRepository {
   }
 
   async delete({ id }) {
+    //Potentially get rid of associated shots also. Requires a link to shotStatRepo.
     await this._roundStatModel.findByIdAndDelete(id);
   }
 }

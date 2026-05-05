@@ -5,6 +5,7 @@ const CourseSchema = new Schema(
   {
     name: { type: String },
     createdBy: { type: Schema.Types.ObjectId, ref: "Golfer" },
+    active: { type: Boolean, default: true },
   },
   { timestamps: true },
 );

@@ -12,6 +12,7 @@ class MongoCourseMapper {
       id: courseDocument._id.toString(),
       name: courseDocument.name,
       createdBy: courseDocument.createdBy,
+      active: courseDocument.active,
     });
   }
 
@@ -23,6 +24,7 @@ class MongoCourseMapper {
     return {
       _id: course.id,
       name: course.name,
+      active: course.active,
     };
   }
 }

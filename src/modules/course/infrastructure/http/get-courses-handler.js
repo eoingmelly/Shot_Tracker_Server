@@ -9,7 +9,6 @@ function createGetCoursesHandler({ courseService }) {
 
       const { golferId } = req.userData;
 
-      console.log("Hyurrayr");
       const courses = await courseService.getCourses();
 
       return res.status(200).json({
